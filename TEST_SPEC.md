@@ -38,7 +38,10 @@
 | T-035 | Q-01 | 件数下限 | 39 件フィクスチャで FAIL、40 件で PASS |
 | T-036 | F-05 | 独立再計算(三角測量) | counts.json の時代別合計 = 総件数 = GeoJSON Feature 数を別経路で再計算し一致 |
 
-## Web(T-04x)— P4 で詳細化
+## Web(T-04x)— P4 で詳細化済み
+
+実行規約(loop_005 確定): ランナーは vitest、`cd web && npx vitest run`。
+テスト実体は `web/lib/__tests__/*.test.ts`(純関数のみ対象。地図描画は手動確認)。
 
 | ID | 対応 | ケース | 期待 |
 |---|---|---|---|

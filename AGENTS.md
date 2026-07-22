@@ -38,7 +38,8 @@ MapLibre 地図として Vercel に公開する。
 
 - パイプライン: Python 3.12 標準ライブラリ + requests のみ(pandas 不使用。件数規模的に不要)
 - Web: Next.js(App Router)+ MapLibre GL JS + 地理院タイル。静的エクスポート(`output: 'export'`)
-- データ受け渡しは `public/data/sites.geojson` の 1 ファイル契約(スキーマは SPEC §5)
+- データ受け渡しは `web/public/data/sites.geojson` の 1 ファイル契約(スキーマは SPEC §5。
+  web/ サブディレクトリ構成は loop_005 で確定)
 - テスト: pytest、全テストはフィクスチャ駆動(ネットワーク不要)。実 Wikidata への疎通は
   `make bronze` の手動実行のみ
 

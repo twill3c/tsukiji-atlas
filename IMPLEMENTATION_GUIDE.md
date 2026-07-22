@@ -12,8 +12,8 @@ tsukiji-atlas/
 │   ├── curated/sites.csv        # 手動キュレーション(Git管理)
 │   ├── bronze/                  # 生取得物(gitignore、fixtures が正)
 │   └── fixtures/                # テスト用固定データ(Git管理)
-├── public/data/sites.geojson    # Gold 出力(生成物、ゲート免除)
-├── web/              # Next.js(app/ components/)※ルート直下でも可、P4 で確定
+├── web/              # Next.js(app/ components/ lib/)。loop_005 でサブディレクトリ構成に確定
+│   └── public/data/sites.geojson  # Gold 出力(生成物、ゲート免除。1 ファイル契約)
 ├── tests/
 └── harness/          # scaffoldctl init が配置(looplog.py / wtctl.py / taxonomy.json)
 ```
@@ -86,6 +86,11 @@ tsukiji-atlas/
 - 帰属表示(N-04): 地理院タイル・東京都オープンデータ(CC BY)・Wikidata(CC0)を Attribution に常時表示
 - スタイル方針は frontend-design スキル参照。時代別の色は 7 色のカテゴリカルパレット、
   色覚多様性に配慮(P4 で確定)
+- **loop_005 確定事項**: web/ サブディレクトリ。純関数は `web/lib/`(filter/query/format/dims)、
+  テストは vitest(`cd web && npx vitest run`)。時代 7 色は dataviz 参照パレットのスロット 1〜7 を
+  時系列順に固定割当(隣接ペア検証 PASS。7 色の全ペア分離は原理的に不足のため、常時凡例・
+  マーカー白リング・詳細パネルの時代テキスト表示で色単独依存を回避)。URL 状態は
+  window.location 直読みで実装(静的エクスポートのため useSearchParams 不使用)
 
 ## 6. CI / cron(P5)
 
@@ -117,4 +122,5 @@ public 化はライセンス配置の完了後に行う。順序を逆にしな�
 
 - ~~中央区 QID と記念碑系クラスの実態~~(**解消済み** loop_001: Q212704 / 記念碑系クラス 0 件、curated 主源泉)
 - ~~都 OD CSV の座標有無 → ジオコーディング方針~~(**解消済み** loop_001: 座標列あり、ジオコーディング不要)
-- web/ をルート直下に置くかサブディレクトリにするか(Vercel の設定都合、loop_005 冒頭で決定)
+- ~~web/ をルート直下に置くかサブディレクトリにするか~~(**解消済み** loop_005: ユーザー判断で
+  web/ サブディレクトリに確定。Vercel は Root Directory=web を指定。Gold 出力先は web/public/data/)
