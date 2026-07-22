@@ -1,0 +1,38 @@
+# 月次 cron(F-09): パイプライン再実行 → web/public/data に差分があれば PR
+# 差分ゲートは免除パス(web/public/data/*)により通過する(GUIDE §6)
+name: monthly-refresh
+
+on:
+  schedule:
+    - cron: "0 3 1 * *" # 毎月 1 日 03:00 UTC = 12:00 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: bronze(実 Wikidata / 都 OD 取得)
+        run: python -m extract.run_bronze
+      - name: silver
+        run: python -m transform.run_silver
+      - name: gold(validate 合格時のみ書込)
+        run: python -m gold.run_gold
+      - name: PR 作成(差分がある場合のみ)
+        uses: peter-evans/create-pull-request@v7
+        with:
+          add-paths: web/public/data/*
+          branch: data/monthly-refresh
+          commit-message: "data: monthly refresh"
+          title: "data: monthly refresh"
+          body: |
+            月次パイプライン再実行による Gold 更新(自動生成)。
+            validate(Q-01〜Q-05)合格済みの出力のみが含まれる。
+            needs_review の増減は Actions ログの silver ステップを参照。
