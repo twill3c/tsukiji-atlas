@@ -14,7 +14,7 @@ export default function Attribution() {
       <a href="https://www.wikidata.org/" target="_blank" rel="noreferrer">
         Wikidata
       </a>
-      (CC0)・自前調査
+      (CC0)・自前調査(CC BY 4.0)
     </footer>
   );
 }
