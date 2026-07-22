@@ -43,7 +43,8 @@ def build(records: list[dict], *, excluded: int) -> tuple[dict, dict]:
     return {"type": "FeatureCollection", "features": features}, counts
 
 
-def write(fc: dict, counts: dict, out_dir: str | Path = "public/data") -> None:
+def write(fc: dict, counts: dict, out_dir: str | Path = "web/public/data") -> None:
+    # 出力先は loop_005 で web/ サブディレクトリ構成に確定(AGENTS §4 の 1 ファイル契約)
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     (out / "sites.geojson").write_text(
