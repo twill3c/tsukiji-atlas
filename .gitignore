@@ -1,6 +1,7 @@
 __pycache__/
 .pytest_cache/
 data/bronze/
+data/silver/
 node_modules/
 .next/
 out/
