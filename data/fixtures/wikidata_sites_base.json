@@ -1,0 +1,35 @@
+{
+  "head": { "vars": ["item", "itemLabel", "coord", "instanceOf", "instanceOfLabel"] },
+  "results": {
+    "bindings": [
+      {
+        "item": { "type": "uri", "value": "http://www.wikidata.org/entity/Q943255" },
+        "itemLabel": { "xml:lang": "ja", "type": "literal", "value": "築地本願寺" },
+        "coord": { "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral", "type": "literal", "value": "Point(139.772222 35.666389)" },
+        "instanceOf": { "type": "uri", "value": "http://www.wikidata.org/entity/Q5393308" },
+        "instanceOfLabel": { "xml:lang": "ja", "type": "literal", "value": "仏教寺院" }
+      },
+      {
+        "item": { "type": "uri", "value": "http://www.wikidata.org/entity/Q4844361" },
+        "itemLabel": { "xml:lang": "ja", "type": "literal", "value": "勝鬨橋" },
+        "coord": { "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral", "type": "literal", "value": "Point(139.775 35.661944)" },
+        "instanceOf": { "type": "uri", "value": "http://www.wikidata.org/entity/Q537127" },
+        "instanceOfLabel": { "xml:lang": "ja", "type": "literal", "value": "道路橋" }
+      },
+      {
+        "item": { "type": "uri", "value": "http://www.wikidata.org/entity/Q4844361" },
+        "itemLabel": { "xml:lang": "ja", "type": "literal", "value": "勝鬨橋" },
+        "coord": { "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral", "type": "literal", "value": "Point(139.775 35.661944)" },
+        "instanceOf": { "type": "uri", "value": "http://www.wikidata.org/entity/Q911663" },
+        "instanceOfLabel": { "xml:lang": "ja", "type": "literal", "value": "跳開橋" }
+      },
+      {
+        "item": { "type": "uri", "value": "http://www.wikidata.org/entity/Q3335477" },
+        "itemLabel": { "xml:lang": "ja", "type": "literal", "value": "波除稲荷神社" },
+        "coord": { "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral", "type": "literal", "value": "Point(139.77156111 35.66351389)" },
+        "instanceOf": { "type": "uri", "value": "http://www.wikidata.org/entity/Q514480" },
+        "instanceOfLabel": { "xml:lang": "ja", "type": "literal", "value": "稲荷神社" }
+      }
+    ]
+  }
+}

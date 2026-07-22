@@ -1,0 +1,4 @@
+site_id,name,era,category,year,lat,lon,summary,qid,license,verified,area
+tsukiji-akashicho-001,築地本願寺,edo_early,shrine_temple_church,1657,35.666389,139.772222,明暦の大火後に浅草から移転。,Q943255,self,true,tsukiji-akashicho
+tsukiji-akashicho-002,勝鬨橋,showa,bridge_civil,1940,35.661944,139.775,隅田川に架かる可動橋。,Q4844361,self,true,tsukiji-akashicho
+tsukiji-akashicho-003,軍艦操練所跡,bakumatsu,naval_military,1857,,,幕府の海軍士官養成機関跡。,,self,false,tsukiji-akashicho

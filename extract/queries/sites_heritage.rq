@@ -1,0 +1,10 @@
+# sites_heritage.rq — 中央区の文化財指定(P1435)付き地物
+# loop_001 確認: 重文 13・国宝 6・土木遺産 3・登録有形 2 ほか。座標は sites_base 側で
+# 取得済みのため本クエリは指定区分のみ(OPTIONAL だらけの巨大クエリを避ける分割方針)
+
+SELECT ?item ?itemLabel ?heritage ?heritageLabel WHERE {
+  ?item wdt:P131+ wd:Q212704 .
+  ?item wdt:P1435 ?heritage .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "ja,en". }
+}
+LIMIT 200

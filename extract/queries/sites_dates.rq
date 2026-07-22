@@ -1,0 +1,9 @@
+# sites_dates.rq — 中央区の成立年(P571)。era 機械判定(Silver、T-023)の入力
+# 判定不能(P571 なし)は needs_review 行きのため、本クエリは P571 がある地物のみ返す
+
+SELECT ?item ?itemLabel ?inception WHERE {
+  ?item wdt:P131+ wd:Q212704 .
+  ?item wdt:P571 ?inception .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "ja,en". }
+}
+LIMIT 400

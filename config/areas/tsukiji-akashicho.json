@@ -1,0 +1,13 @@
+{
+  "area": "tsukiji-akashicho",
+  "label": "築地・明石町",
+  "admin_qid": "Q212704",
+  "bbox": {
+    "min_lat": 35.658,
+    "max_lat": 35.674,
+    "min_lon": 139.764,
+    "max_lon": 139.7815
+  },
+  "curated_csv": "data/curated/sites.csv",
+  "od_address_filter": "中央区"
+}
