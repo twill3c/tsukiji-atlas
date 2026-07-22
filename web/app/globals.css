@@ -33,7 +33,9 @@ body {
 .chip .swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(11, 11, 11, 0.15); }
 
 .main { position: relative; flex: 1; min-height: 0; }
-.map { position: absolute; inset: 0; }
+/* maplibre は初期化時にコンテナへ .maplibregl-map{position:relative} を当てて
+   position:absolute を同詳細度で上書きするため、inset だけでなく width/height を明示する */
+.map { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .marker {
   width: 14px; height: 14px; border-radius: 50%;
