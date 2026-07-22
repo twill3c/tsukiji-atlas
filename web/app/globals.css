@@ -1,0 +1,65 @@
+:root {
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-secondary: #52514e;
+  --ink-muted: #898781;
+  --hairline: #e1e0d9;
+  --chip-bg: #f2f1ee;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.app { display: flex; flex-direction: column; height: 100dvh; }
+.header { padding: 10px 16px 6px; border-bottom: 1px solid var(--hairline); }
+.header h1 { font-size: 16px; margin: 0 0 6px; }
+.header .count { color: var(--ink-muted); font-weight: normal; font-size: 12px; margin-left: 8px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 8px; }
+.chips .group-label { font-size: 11px; color: var(--ink-muted); align-self: center; margin-right: 2px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--hairline); border-radius: 999px;
+  background: var(--chip-bg); color: var(--ink-secondary);
+  font-size: 12px; line-height: 1; padding: 6px 10px; cursor: pointer;
+}
+.chip[aria-pressed="true"] { border-color: var(--ink-secondary); background: #fff; color: var(--ink); font-weight: 600; }
+.chip .swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(11, 11, 11, 0.15); }
+
+.main { position: relative; flex: 1; min-height: 0; }
+.map { position: absolute; inset: 0; }
+
+.marker {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid #fff; /* 白リング: 重なり・タイル上の分離(dataviz 規律) */
+  box-shadow: 0 0 0 1px rgba(11, 11, 11, 0.25);
+  cursor: pointer;
+}
+.marker[data-selected="true"] { width: 18px; height: 18px; box-shadow: 0 0 0 2px var(--ink); }
+
+.panel {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  width: min(320px, calc(100% - 24px));
+  background: #fff; border: 1px solid var(--hairline); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(11, 11, 11, 0.12);
+  padding: 14px 16px;
+}
+.panel h2 { font-size: 15px; margin: 0 0 8px; padding-right: 20px; }
+.panel .close { position: absolute; top: 8px; right: 10px; border: 0; background: none; font-size: 16px; color: var(--ink-muted); cursor: pointer; }
+.panel dl { margin: 0; font-size: 12.5px; }
+.panel dt { color: var(--ink-muted); float: left; clear: left; width: 4.5em; }
+.panel dd { margin: 0 0 4px 5em; color: var(--ink); }
+.panel .summary { font-size: 13px; margin: 8px 0; line-height: 1.6; }
+.panel .era-tag { display: inline-flex; align-items: center; gap: 5px; }
+
+.attribution {
+  padding: 5px 16px; border-top: 1px solid var(--hairline);
+  font-size: 11px; color: var(--ink-muted); background: var(--surface);
+}
+.attribution a { color: inherit; }

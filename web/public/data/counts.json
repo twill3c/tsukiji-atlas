@@ -1,0 +1,7 @@
+{
+  "_note": "開発用フィクスチャ(P4)。P5 で Gold 出力に置換する",
+  "total": 10,
+  "by_era": { "edo_early": 1, "edo_late": 1, "bakumatsu": 2, "meiji": 4, "showa": 2 },
+  "by_category": { "shrine_temple_church": 2, "bridge_civil": 1, "naval_military": 1, "edu_medical": 2, "samurai_site": 1, "monument_origin": 1, "literature_arts": 1, "market_food": 1 },
+  "excluded": 0
+}
