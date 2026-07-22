@@ -11,6 +11,12 @@ Wikidata + 東京都オープンデータ + 手動キュレーション → Meda
 4. **IMPLEMENTATION_GUIDE.md** — フェーズ計画・各層の設計・並走指定
 5. **TEST_SPEC.md** — 要求 ID にトレースするテストケース
 
+## ライセンス
+
+二層構成(SPEC N-05): **コード = MIT**([LICENSE](LICENSE))/
+**データ = CC BY 4.0**(詳細と帰属は [data/curated/LICENSE-DATA.md](data/curated/LICENSE-DATA.md)。
+Wikidata 由来の事実データは CC0)。地図タイルは国土地理院(出典表示必須)。
+
 ## 最初のループ(Claude Code)
 
 ```
