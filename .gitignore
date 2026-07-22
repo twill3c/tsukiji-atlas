@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+node_modules/
+.next/
+out/
+.wt-baseline.json
+.env*

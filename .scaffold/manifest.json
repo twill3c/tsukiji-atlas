@@ -1,0 +1,36 @@
+{
+  "scaffold_version": "1.0.0",
+  "registry_hint": "..\\harness-kit\\scaffold-kit\\registry",
+  "components": [
+    {
+      "type": "block",
+      "id": "agents_core",
+      "target": "AGENTS.md",
+      "source": "blocks/agents_core.md",
+      "installed_version": "1.0.0",
+      "installed_sha256": "aa18e95da6324039b4729d76f561bee35e4f0e6d32eadfba6a7a431297320700"
+    },
+    {
+      "type": "file",
+      "id": "pr_template",
+      "target": ".github/PULL_REQUEST_TEMPLATE.md",
+      "source": "files/.github/PULL_REQUEST_TEMPLATE.md",
+      "installed_version": "1.0.0",
+      "installed_sha256": "a796725e0b3682bc02f12f614eaf88d96b0387a362c2e1b871cd85c5fb8a575d"
+    },
+    {
+      "type": "template",
+      "id": "spec_skeleton",
+      "target": "SPEC.md",
+      "source": "templates/SPEC.md.tmpl",
+      "installed_version": "1.0.0"
+    },
+    {
+      "type": "template",
+      "id": "test_spec_skeleton",
+      "target": "TEST_SPEC.md",
+      "source": "templates/TEST_SPEC.md.tmpl",
+      "installed_version": "1.0.0"
+    }
+  ]
+}

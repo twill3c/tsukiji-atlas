@@ -1,0 +1,11 @@
+site_id,name,era,category,year,lat,lon,summary,qid,license,verified,area
+tsukiji-akashicho-001,築地本願寺,edo_early,shrine_temple_church,1657,,,明暦の大火後に浅草から移転。現本堂は伊東忠太設計(1934年)で国重要文化財。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-002,勝鬨橋,showa,bridge_civil,1940,,,隅田川に架かる可動橋(跳開橋)。国重要文化財。1970年を最後に開閉停止。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-003,軍艦操練所跡,bakumatsu,naval_military,1857,,,幕府が築地講武所内に設けた海軍士官養成機関。勝海舟らが関わった海軍発祥の地の一つ。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-004,慶應義塾発祥の地記念碑,bakumatsu,edu_medical,1858,,,福澤諭吉が中津藩中屋敷に開いた蘭学塾に始まる。碑は聖路加国際病院敷地付近。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-005,浅野内匠頭邸跡,edo_late,samurai_site,,,,赤穂藩浅野家の上屋敷跡。忠臣蔵ゆかりの地として碑が立つ。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-006,築地居留地跡,meiji,monument_origin,1869,,,明治初期の外国人居留地。教会・ミッションスクール・病院が集積し文明開化の窓口となった。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-007,カトリック築地教会聖堂,meiji,shrine_temple_church,1878,,,東京最古のカトリック教会の一つ。現聖堂(1927年)は区民有形文化財。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-008,聖路加国際病院(トイスラー記念館),meiji,edu_medical,1902,,,居留地の医療伝道に始まる病院。トイスラー記念館は居留地時代の面影を伝える。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-009,芥川龍之介生誕の地,meiji,literature_arts,1892,,,作家・芥川龍之介の生誕地。旧京橋区入船町、現在は碑が立つ。,,self,false,tsukiji-akashicho
+tsukiji-akashicho-010,築地市場跡(場外市場),showa,market_food,1935,,,関東大震災後に日本橋魚河岸から移転し開場。2018年に豊洲へ移転、場外市場は現存。,,self,false,tsukiji-akashicho
