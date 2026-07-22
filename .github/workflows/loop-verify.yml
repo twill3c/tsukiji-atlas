@@ -1,0 +1,44 @@
+# loop-verify(GUIDE §6): pytest → looplog validate → 差分ゲート(PR のみ)+ web テスト
+name: loop-verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # wtctl gate の merge-base 計算に全履歴が必要
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - name: pytest
+        run: python -m pytest -q --tb=no
+      - name: Validate loop logs
+        run: python harness/scripts/looplog.py validate
+      - name: Diff gate (PR のみ)
+        if: github.event_name == 'pull_request'
+        run: python harness/scripts/wtctl.py gate --base "origin/${{ github.base_ref }}"
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - name: vitest (T-04x)
+        run: npx vitest run
+      - name: next build(静的エクスポート検証)
+        run: npx next build
