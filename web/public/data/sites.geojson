@@ -1,16 +1,853 @@
 {
-  "type": "FeatureCollection",
-  "_note": "開発用フィクスチャ(P4)。座標は概略値であり検証済みデータではない。P5 で Gold 出力(gold/export_geojson.py)に置換する",
-  "features": [
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.772222, 35.666389] }, "properties": { "site_id": "tsukiji-akashicho-001", "name": "築地本願寺", "era": "edo_early", "category": "shrine_temple_church", "year": 1657, "summary": "明暦の大火後に浅草から移転。現本堂は伊東忠太設計(1934年)で国重要文化財。", "source": "curated", "qid": "Q943255", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.775, 35.661944] }, "properties": { "site_id": "tsukiji-akashicho-002", "name": "勝鬨橋", "era": "showa", "category": "bridge_civil", "year": 1940, "summary": "隅田川に架かる可動橋(跳開橋)。国重要文化財。1970年を最後に開閉停止。", "source": "curated", "qid": "Q4844361", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.7702, 35.6647] }, "properties": { "site_id": "tsukiji-akashicho-003", "name": "軍艦操練所跡", "era": "bakumatsu", "category": "naval_military", "year": 1857, "summary": "幕府が築地講武所内に設けた海軍士官養成機関。勝海舟らが関わった海軍発祥の地の一つ。", "source": "curated", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.7781, 35.6669] }, "properties": { "site_id": "tsukiji-akashicho-004", "name": "慶應義塾発祥の地記念碑", "era": "bakumatsu", "category": "edu_medical", "year": 1858, "summary": "福澤諭吉が中津藩中屋敷に開いた蘭学塾に始まる。碑は聖路加国際病院敷地付近。", "source": "curated", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.7764, 35.6664] }, "properties": { "site_id": "tsukiji-akashicho-005", "name": "浅野内匠頭邸跡", "era": "edo_late", "category": "samurai_site", "summary": "赤穂藩浅野家の上屋敷跡。忠臣蔵ゆかりの地として碑が立つ。", "source": "curated", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.777, 35.6675] }, "properties": { "site_id": "tsukiji-akashicho-006", "name": "築地居留地跡", "era": "meiji", "category": "monument_origin", "year": 1869, "summary": "明治初期の外国人居留地。教会・ミッションスクール・病院が集積し文明開化の窓口となった。", "source": "curated", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.777111, 35.668167] }, "properties": { "site_id": "tsukiji-akashicho-007", "name": "カトリック築地教会聖堂", "era": "meiji", "category": "shrine_temple_church", "year": 1878, "summary": "東京最古のカトリック教会の一つ。現聖堂(1927年)は区民有形文化財。", "source": "curated", "qid": "Q11603476", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.777222, 35.667222] }, "properties": { "site_id": "tsukiji-akashicho-008", "name": "聖路加国際病院(トイスラー記念館)", "era": "meiji", "category": "edu_medical", "year": 1902, "summary": "居留地の医療伝道に始まる病院。トイスラー記念館は居留地時代の面影を伝える。", "source": "curated", "qid": "Q7589810", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.776, 35.668] }, "properties": { "site_id": "tsukiji-akashicho-009", "name": "芥川龍之介生誕の地", "era": "meiji", "category": "literature_arts", "year": 1892, "summary": "作家・芥川龍之介の生誕地。旧京橋区入船町、現在は碑が立つ。", "source": "curated", "license": "self", "area": "tsukiji-akashicho" } },
-    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [139.769722, 35.661389] }, "properties": { "site_id": "tsukiji-akashicho-010", "name": "築地市場跡(場外市場)", "era": "showa", "category": "market_food", "year": 1935, "summary": "関東大震災後に日本橋魚河岸から移転し開場。2018年に豊洲へ移転、場外市場は現存。", "source": "curated", "qid": "Q859471", "license": "self", "area": "tsukiji-akashicho" } }
-  ]
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.772222,
+     35.666389
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-001",
+    "name": "築地本願寺",
+    "era": "edo_early",
+    "category": "shrine_temple_church",
+    "summary": "明暦の大火後に浅草から移転。現本堂は伊東忠太設計(1934年)で国重要文化財。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1657,
+    "qid": "Q943255"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.775,
+     35.661944
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-002",
+    "name": "勝鬨橋",
+    "era": "showa",
+    "category": "bridge_civil",
+    "summary": "隅田川に架かる可動橋(跳開橋)。国重要文化財。1970年を最後に開閉停止。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1940,
+    "qid": "Q4844361"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7702,
+     35.6647
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-003",
+    "name": "軍艦操練所跡",
+    "era": "bakumatsu",
+    "category": "naval_military",
+    "summary": "幕府が築地講武所内に設けた海軍士官養成機関。勝海舟らが関わった海軍発祥の地の一つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1857
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7781,
+     35.6669
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-004",
+    "name": "慶應義塾発祥の地記念碑",
+    "era": "bakumatsu",
+    "category": "edu_medical",
+    "summary": "福澤諭吉が中津藩中屋敷に開いた蘭学塾に始まる。碑は聖路加国際病院敷地付近。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1858
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7764,
+     35.6664
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-005",
+    "name": "浅野内匠頭邸跡",
+    "era": "edo_late",
+    "category": "samurai_site",
+    "summary": "赤穂藩浅野家の上屋敷跡。忠臣蔵ゆかりの地として碑が立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.777,
+     35.6675
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-006",
+    "name": "築地居留地跡",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "明治初期の外国人居留地。教会・ミッションスクール・病院が集積し文明開化の窓口となった。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1869
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.777111,
+     35.668167
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-007",
+    "name": "カトリック築地教会聖堂",
+    "era": "meiji",
+    "category": "shrine_temple_church",
+    "summary": "東京最古のカトリック教会の一つ。現聖堂(1927年)は区民有形文化財。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1878,
+    "qid": "Q11603476"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.777222,
+     35.667222
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-008",
+    "name": "聖路加国際病院(トイスラー記念館)",
+    "era": "meiji",
+    "category": "edu_medical",
+    "summary": "居留地の医療伝道に始まる病院。トイスラー記念館は居留地時代の面影を伝える。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1902,
+    "qid": "Q7589810"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.776,
+     35.668
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-009",
+    "name": "芥川龍之介生誕の地",
+    "era": "meiji",
+    "category": "literature_arts",
+    "summary": "作家・芥川龍之介の生誕地。旧京橋区入船町、現在は碑が立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1892
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.769722,
+     35.661389
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-010",
+    "name": "築地市場跡(場外市場)",
+    "era": "showa",
+    "category": "market_food",
+    "summary": "関東大震災後に日本橋魚河岸から移転し開場。2018年に豊洲へ移転、場外市場は現存。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1935,
+    "qid": "Q859471"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.77156,
+     35.66351
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-011",
+    "name": "波除稲荷神社",
+    "era": "edo_early",
+    "category": "shrine_temple_church",
+    "summary": "明暦後の築地埋立の難工事の際に波除の神を祀ったのが起源と伝わる築地の鎮守。境内に大獅子頭と食文化の塚が並ぶ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1659,
+    "qid": "Q3335477"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.779722,
+     35.672444
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-012",
+    "name": "鐵砲洲稲荷神社",
+    "era": "edo_early",
+    "category": "shrine_temple_church",
+    "summary": "江戸湊の入口に祀られた湊・京橋地域の産土神。現社殿は昭和初期の造営。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "qid": "Q11651343"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7797,
+     35.6725
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-013",
+    "name": "鉄砲洲富士",
+    "era": "edo_late",
+    "category": "shrine_temple_church",
+    "summary": "鐵砲洲稲荷神社境内に現存する富士塚。江戸の富士信仰の遺構として貴重。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.773722,
+     35.671278
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-014",
+    "name": "新富座跡",
+    "era": "meiji",
+    "category": "literature_arts",
+    "summary": "守田座が猿若町から移転し新富座と改称。明治の演劇改良運動の舞台となった劇場の跡。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1875,
+    "qid": "Q11501889"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.77175,
+     35.668361
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-015",
+    "name": "築地小劇場跡",
+    "era": "taisho",
+    "category": "literature_arts",
+    "summary": "土方与志と小山内薫が創設した日本初の新劇常設劇場の跡。碑が立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1924,
+    "qid": "Q11603474"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7773,
+     35.6689
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-016",
+    "name": "電信創業之地碑",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "築地運上所内の伝信機役所と横浜間で公衆電信が開業。日本の電気通信発祥を記念する碑。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1869
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7781,
+     35.6673
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-017",
+    "name": "指紋研究発祥の地",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "築地居留地に住んだ宣教医ヘンリー・フォールズが指紋による個人識別の研究を発表したことを記念する碑。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1880
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7784,
+     35.6668
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-018",
+    "name": "アメリカ公使館跡",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "築地居留地に置かれた米国公使館の跡。記念の石碑とレリーフが聖路加ガーデン周辺に残る。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1875
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7746,
+     35.6653
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-019",
+    "name": "シーボルト胸像",
+    "era": "edo_late",
+    "category": "edu_medical",
+    "summary": "あかつき公園に立つ蘭館医シーボルトの胸像。娘の産科医・楠本イネら蘭学ゆかりの地であることを伝える。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1823
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.777,
+     35.6667
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-020",
+    "name": "蘭学の泉はここに(解体新書翻訳の地)",
+    "era": "edo_late",
+    "category": "edu_medical",
+    "summary": "中津藩邸で前野良沢・杉田玄白らがターヘル・アナトミアを翻訳。解体新書誕生の地を記念する碑。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1771
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.77,
+     35.662
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-021",
+    "name": "浴恩園跡",
+    "era": "edo_late",
+    "category": "samurai_site",
+    "summary": "老中松平定信の下屋敷に築かれた大名庭園の跡。のちの築地市場一帯にあたる。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1792
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.768,
+     35.6653
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-022",
+    "name": "海軍兵学寮・海軍軍医学校跡",
+    "era": "meiji",
+    "category": "naval_military",
+    "summary": "明治期の築地は海軍用地で、士官教育の兵学寮と軍医養成の軍医学校が置かれた。説明板が立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1870
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.774,
+     35.663
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-023",
+    "name": "海軍経理学校之碑",
+    "era": "meiji",
+    "category": "naval_military",
+    "summary": "海軍の主計士官を養成した経理学校の記念碑。前身の会計学舎は築地に開設された。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1874
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7768,
+     35.6677
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-025",
+    "name": "立教学院発祥の地",
+    "era": "meiji",
+    "category": "edu_medical",
+    "summary": "ウィリアムズ主教が築地居留地に開いた私塾に始まる。記念碑が明石町に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1874
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7772,
+     35.668
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-026",
+    "name": "青山学院記念の地",
+    "era": "meiji",
+    "category": "edu_medical",
+    "summary": "築地居留地に開かれた前身校(海岸女学校ほか)にちなむ記念の地。碑が明石町に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1874
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7767,
+     35.6683
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-027",
+    "name": "暁星学園発祥の地",
+    "era": "meiji",
+    "category": "edu_medical",
+    "summary": "マリア会宣教師が築地居留地で開いた学校に始まる。記念碑が明石町に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1888
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7766,
+     35.6681
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-029",
+    "name": "女子学院発祥の地",
+    "era": "meiji",
+    "category": "edu_medical",
+    "summary": "築地居留地で開かれたA六番女学校に始まる。記念碑が明石町に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1870
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7758,
+     35.666
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-030",
+    "name": "運上所跡",
+    "era": "bakumatsu",
+    "category": "monument_origin",
+    "summary": "開市に伴い幕府が築地鉄砲洲に設けた税関の前身機関の跡。東京税関発祥の地とされる。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1867
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7712,
+     35.664
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-031",
+    "name": "築地ホテル館跡",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "日本初の本格的洋式ホテル。清水喜助の擬洋風建築で文明開化の象徴となったが1872年の大火で焼失。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1868
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.77,
+     35.6672
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-032",
+    "name": "活字発祥の碑(東京築地活版製造所跡)",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "平野富二が設立した活版製造所の跡。「築地体」など近代日本の活字印刷の源流。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1873
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.779,
+     35.671
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-033",
+    "name": "攻玉社発祥の地",
+    "era": "bakumatsu",
+    "category": "edu_medical",
+    "summary": "近藤真琴が鉄砲洲で開いた蘭学塾・攻玉塾に始まる。記念碑が湊に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1863
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.78141,
+     35.67297
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-034",
+    "name": "南高橋",
+    "era": "showa",
+    "category": "bridge_civil",
+    "summary": "亀島川河口に架かる鋼トラス橋。震災で被災した旧両国橋の中央径間を移設転用した都内最古級の車道鉄橋。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1932,
+    "qid": "Q11408792"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7712,
+     35.6716
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-035",
+    "name": "三吉橋",
+    "era": "showa",
+    "category": "bridge_civil",
+    "summary": "旧築地川の分流点に架けられた震災復興期の珍しい三叉橋。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1929
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7811,
+     35.6678
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-036",
+    "name": "佃大橋",
+    "era": "showa",
+    "category": "bridge_civil",
+    "summary": "江戸以来320年続いた佃の渡しに代わり架けられた隅田川の橋。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1964,
+    "qid": "Q11381606"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7718,
+     35.6637
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-037",
+    "name": "海幸橋(親柱)",
+    "era": "showa",
+    "category": "bridge_civil",
+    "summary": "旧築地川東支川に架かった震災復興橋。廃橋後も親柱が波除稲荷神社脇に保存される。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1927
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.7743,
+     35.6626
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-038",
+    "name": "かちどきの渡し跡",
+    "era": "meiji",
+    "category": "monument_origin",
+    "summary": "日露戦争の旅順陥落を記念して開設された隅田川の渡船場の跡。記念碑が築地側に残る。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1905
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.770432,
+     35.663941
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-039",
+    "name": "𠮷野家一号店(築地市場)",
+    "era": "showa",
+    "category": "market_food",
+    "summary": "日本橋魚河岸で創業した𠮷野家が市場移転とともに築地に開いた一号店。市場の食文化を象徴した。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "qid": "Q60987045"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.772,
+     35.6662
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-040",
+    "name": "九条武子歌碑",
+    "era": "taisho",
+    "category": "literature_arts",
+    "summary": "西本願寺法主の娘で歌人・社会事業家の九条武子を偲ぶ歌碑。築地本願寺境内に立つ。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.775253,
+     35.669769
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-041",
+    "name": "明石小学校",
+    "era": "showa",
+    "category": "edu_medical",
+    "summary": "関東大震災後の復興小学校の一つ。昭和初期の鉄筋コンクリート校舎で知られる。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1926,
+    "qid": "Q81916373"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     139.768,
+     35.6697
+    ]
+   },
+   "properties": {
+    "site_id": "tsukiji-akashicho-042",
+    "name": "歌舞伎座",
+    "era": "meiji",
+    "category": "literature_arts",
+    "summary": "歌舞伎専用劇場として旧木挽町に開場。現在の建物は第5期(2013年)。",
+    "source": "curated",
+    "license": "self",
+    "area": "tsukiji-akashicho",
+    "year": 1889
+   }
+  }
+ ]
 }
