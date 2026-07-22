@@ -27,7 +27,7 @@ tsukiji-atlas/
 | P2 | loop_003 | Silver: 正規化・名寄せ・ディメンション付与(F-04) | T-02x 合格 |
 | P3 | loop_004 | Gold: geojson 出力 + validate(F-05, Q-01〜05) | T-03x 合格 |
 | P4 | loop_005 | 地図 UI(F-06〜07)。**loop_004 と worktree 並走可** | T-04x + 手動確認 |
-| P5 | loop_006 | Vercel 公開(F-08)+ 月次 cron(F-09)+ ライセンス配置(N-05) | 本番 URL 疎通 + LICENSE 配置済み |
+| P5 | loop_006〜008 | loop_006: curated 候補 42 件(済・検証待ち)/ loop_007: 結線・ライセンス配置(済)/ loop_008: 人間検証後に実データ Gold → 公開(F-08)+ 月次 cron(F-09) | 本番 URL 疎通 + LICENSE 配置済み |
 | P6 | loop_007+ | エリア拡張: 日本橋 → 佃・月島(F-10、brownfield) | 設定追加のみで成立 |
 
 並走規律: P3(loop_004)と P4(loop_005)は `public/data/sites.geojson` の契約(SPEC §5)を
@@ -94,7 +94,9 @@ tsukiji-atlas/
 
 ## 6. CI / cron(P5)
 
-- loop-verify: pytest → `harness/looplog.py validate` → `harness/wtctl.py gate --base origin/main`
+- loop-verify: pytest → looplog validate → wtctl gate --base origin/main
+  (スクリプト実体はローカルでは `../harness-kit/` 配下。CI への供給方法 — 同梱かチェックアウトか — は
+  loop_008 の CI 構築時に決定する)
 - 月次 cron: `make bronze && make silver && make gold` → `public/data/` に差分があれば
   `data: monthly refresh` の PR を自動作成(差分ゲートは免除パスにより通過する)
 
