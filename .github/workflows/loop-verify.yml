@@ -42,3 +42,7 @@ jobs:
         run: npx vitest run
       - name: next build(静的エクスポート検証)
         run: npx next build
+      - name: Playwright Chromium 導入
+        run: npx playwright install --with-deps chromium
+      - name: map-smoke(T-044 描画スモーク)
+        run: npm run smoke
