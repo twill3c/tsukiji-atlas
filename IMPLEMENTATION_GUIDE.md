@@ -15,7 +15,7 @@ tsukiji-atlas/
 ├── web/              # Next.js(app/ components/ lib/)。loop_005 でサブディレクトリ構成に確定
 │   └── public/data/sites.geojson  # Gold 出力(生成物、ゲート免除。1 ファイル契約)
 ├── tests/
-└── harness/          # scaffoldctl init が配置(looplog.py / wtctl.py / taxonomy.json)
+└── harness/          # CI 用同梱ミラー(scripts/ + schema/。正本は ../harness-kit、harness/README.md 参照)
 ```
 
 ## 1. フェーズ計画
@@ -94,9 +94,9 @@ tsukiji-atlas/
 
 ## 6. CI / cron(P5)
 
-- loop-verify: pytest → looplog validate → wtctl gate --base origin/main
-  (スクリプト実体はローカルでは `../harness-kit/` 配下。CI への供給方法 — 同梱かチェックアウトか — は
-  loop_008 の CI 構築時に決定する)
+- loop-verify: pytest → `harness/scripts/looplog.py validate` → `harness/scripts/wtctl.py gate`(PR のみ)
+  + web ジョブ(vitest / next build)。**CI 供給は同梱で確定**(loop_009。harness-kit は GitHub 非公開の
+  ため、`harness/` にミラーを置く。同期方針は harness/README.md)
 - 月次 cron: `make bronze && make silver && make gold` → `public/data/` に差分があれば
   `data: monthly refresh` の PR を自動作成(差分ゲートは免除パスにより通過する)
 
