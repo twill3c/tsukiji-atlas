@@ -51,3 +51,4 @@
 - Q-06: summary の逐語一致なし(公開前に全件目視。チェック結果をループログに記録)
 - 地図の実表示・地理院タイル帰属・色覚配慮(P4 完了時チェックリスト)
 - Vercel 本番 URL の疎通と Lighthouse 簡易確認(P5)
+- N-05: LICENSE / LICENSE-DATA.md / README ライセンス節 / Attribution 表記の4点一致を public 化直前に確認(結果をループログに記録)

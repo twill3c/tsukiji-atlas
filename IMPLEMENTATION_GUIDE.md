@@ -27,7 +27,7 @@ tsukiji-atlas/
 | P2 | loop_003 | Silver: 正規化・名寄せ・ディメンション付与(F-04) | T-02x 合格 |
 | P3 | loop_004 | Gold: geojson 出力 + validate(F-05, Q-01〜05) | T-03x 合格 |
 | P4 | loop_005 | 地図 UI(F-06〜07)。**loop_004 と worktree 並走可** | T-04x + 手動確認 |
-| P5 | loop_006 | Vercel 公開(F-08)+ 月次 cron(F-09) | 本番 URL 疎通 |
+| P5 | loop_006 | Vercel 公開(F-08)+ 月次 cron(F-09)+ ライセンス配置(N-05) | 本番 URL 疎通 + LICENSE 配置済み |
 | P6 | loop_007+ | エリア拡張: 日本橋 → 佃・月島(F-10、brownfield) | 設定追加のみで成立 |
 
 並走規律: P3(loop_004)と P4(loop_005)は `public/data/sites.geojson` の契約(SPEC §5)を
@@ -92,6 +92,26 @@ tsukiji-atlas/
 - loop-verify: pytest → `harness/looplog.py validate` → `harness/wtctl.py gate --base origin/main`
 - 月次 cron: `make bronze && make silver && make gold` → `public/data/` に差分があれば
   `data: monthly refresh` の PR を自動作成(差分ゲートは免除パスにより通過する)
+
+## 6.5 ライセンス配置(loop_006 内・public 化の前提条件)
+
+public 化はライセンス配置の完了後に行う。順序を逆にしない。
+
+1. リポジトリ直下に `LICENSE`(MIT、著作権者表記は Tetsuro / twill3c)を配置する
+2. `data/curated/LICENSE-DATA.md` を作成し、データ層のライセンスを宣言する:
+   curated 由来(summary 含む)= CC BY 4.0、Wikidata 由来 = CC0、
+   東京都オープンデータ由来 = CC BY 4.0(東京都教育委員会)。
+   sites.geojson は混合著作物として全体 CC BY 4.0、帰属は本ファイルと
+   サイトの Attribution 欄に従う旨を明記する
+3. README.md に「ライセンス」節を追加し、コード = MIT / データ = CC BY 4.0 の
+   二層構成と LICENSE-DATA.md への参照を書く(既存の「ライセンス: 未定」を置換)
+4. Web の Attribution コンポーネント(N-04)の表記と LICENSE-DATA.md の内容が
+   一致していることを確認する
+5. public 化の直前に、Git 全履歴に秘匿情報がないことを確認する
+   (`git log -p | grep` での目視に加え、wtctl gate の秘密情報スキャンを
+   初回コミットからの全差分に対して実行: `python harness/wtctl.py gate --base <初回コミットSHA>`)
+
+注: harness-kit リポジトリの public 化はスコープ外(独立の判断。当面 private)。
 
 ## 7. エスカレーション対象(既知の判断待ち)
 
