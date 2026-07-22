@@ -1,13 +1,14 @@
-# sites_base.rq — 中央区の座標付き地物(基本形・小さく確認するための叩き台)
-# ⚠ loop_001 で必ず検証すること:
-#   - wd:QXXXXXX は中央区(東京都)の QID に置換(仮置き。誤りうる)
-#   - 対象クラス(記念碑/史跡/文化財)のうち実際にヒットが集まるものを確認
-#   - LIMIT を付けたまま件数感を掴み、確認後に本実装へ
+# sites_base.rq — 中央区の座標付き地物(基本形)
+# loop_001 確認済み(docs/loop_001_exploration.md):
+#   - 中央区(東京都)= Q212704(同名区多数のためラベル一致での特定は禁止)
+#   - P131 は町丁粒度が多いため推移的(P131+)に辿る。直付けだと 284/535 件に減る
+#   - 記念碑・史跡系クラス(Q4989906/Q839954 等)はヒット 0 件。クラス絞り込みは
+#     sites_heritage.rq(P1435)側で行い、本クエリは座標付き全地物を広く取る
 
 SELECT ?item ?itemLabel ?coord ?instanceOf ?instanceOfLabel WHERE {
-  ?item wdt:P131 wd:QXXXXXX .          # 所在行政区 = 中央区(東京都)※要確定
+  ?item wdt:P131+ wd:Q212704 .         # 所在行政区 = 中央区(東京都)、町丁経由を含む
   ?item wdt:P625 ?coord .              # 座標
   ?item wdt:P31 ?instanceOf .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "ja,en". }
 }
-LIMIT 200
+LIMIT 600
