@@ -215,13 +215,21 @@ def cmd_validate(args) -> int:
 
 # ---------------------------------------------------------------- append
 
-def parse_kv(pairs: list[str]) -> dict:
-    """key=value 列を data オブジェクトに変換。値は JSON として解釈を試み、失敗時は文字列。"""
+def parse_kv(pairs: list[str], str_fields: frozenset[str] = frozenset()) -> dict:
+    """key=value 列を data オブジェクトに変換。値は JSON として解釈を試み、失敗時は文字列。
+
+    str_fields に挙がったキーは JSON 解釈をせず常に文字列として扱う。
+    指数表記に見える git 短縮 sha(72817e6 等)が float 化して記録拒否される
+    問題への恒久対処(HC-005)。
+    """
     data: dict = {}
     for pair in pairs:
         if "=" not in pair:
             raise SystemExit(f"--data は key=value 形式で指定してください: {pair!r}")
         key, _, raw = pair.partition("=")
+        if key in str_fields:
+            data[key] = raw
+            continue
         try:
             data[key] = json.loads(raw)
         except json.JSONDecodeError:
@@ -231,13 +239,17 @@ def parse_kv(pairs: list[str]) -> dict:
 
 def cmd_append(args) -> int:
     taxonomy = load_taxonomy()
+    # スキーマ上 str 固定のフィールドは生文字列のまま受け取る(HC-005)
+    str_fields = frozenset(
+        f for f, types in EVENT_SPECS.get(args.event, {}).items() if types == (str,)
+    )
     rec = {
         "v": SCHEMA_VERSION,
         "ts": args.ts or now_ts(),
         "project": args.project or detect_project(),
         "loop_id": args.loop,
         "event": args.event,
-        "data": parse_kv(args.data or []),
+        "data": parse_kv(args.data or [], str_fields),
     }
     errs = validate_record(rec, taxonomy, 0, "(new)")
     if errs:
