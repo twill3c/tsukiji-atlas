@@ -6,6 +6,8 @@
 - マーカー: `unit` / `integration` / `validation`。全テストはフィクスチャ駆動(N-01、ネットワーク不要)
 - フィクスチャ更新は専用コミット(`test: update fixtures`)+ ループログに理由を記録
 - 実 Wikidata 疎通は `make bronze` の手動実行のみ(結果はループログに test_run として記録)
+- 解析解を期待する合成フィクスチャは、期待値の導出前提(直交性・一意性・単一帰属等)を
+  **テスト内の assert で検算**し、導出過程をコメントに残す(VERIF-FALSE 予防、HC-004)
 
 ## Bronze(T-01x)
 
