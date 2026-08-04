@@ -18,8 +18,10 @@ import datetime as dt
 import fnmatch
 import json
 import re
+import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 JST = dt.timezone(dt.timedelta(hours=9))
@@ -28,6 +30,7 @@ BASELINE_FILE = ".wt-baseline.json"
 DEFAULT_CONFIG = {
     "base_branch": "main",
     "test_command": "python -m pytest -q --tb=no",
+    "setup_command": None,
     "gate": {
         "max_total_lines": 500,
         "max_files": 30,
@@ -104,6 +107,19 @@ def cmd_open(args) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)
     git(["worktree", "add", str(path), "-b", branch, base], cwd=root)
     print(f"worktree 作成: {path}(ブランチ {branch} ← {base})")
+
+    setup = cfg.get("setup_command")
+    if setup:
+        # WT-02e: 依存インストール等をベースライン測定より前に実行する。
+        # これを行わないと Node 等のプロジェクトでは常に偽の赤ベースラインになる(HC-001)
+        print(f"セットアップ実行中(WT-02e): {setup}")
+        r = subprocess.run(setup, shell=True, cwd=path, capture_output=True, text=True)
+        if r.returncode != 0:
+            tail = "\n".join(((r.stderr or r.stdout).strip().splitlines() or [""])[-5:])
+            print(f"  ✗ setup_command 失敗(exit {r.returncode}):\n{tail}")
+            print(f"  ベースラインは未測定です。原因解消後に open をやり直すか、"
+                  f"`close --loop {args.loop} --force` で worktree を破棄してください")
+            return 1
 
     print("クリーンベースライン測定中(WT-02a)…")
     baseline = run_tests(cfg["test_command"], path)
@@ -282,6 +298,30 @@ def cmd_list(args) -> int:
     return 0
 
 
+def registered_worktrees(root: Path) -> set[Path]:
+    out = git(["worktree", "list", "--porcelain"], cwd=root)
+    return {
+        Path(line[len("worktree "):].strip()).resolve()
+        for line in out.splitlines()
+        if line.startswith("worktree ")
+    }
+
+
+def remove_worktree(root: Path, path: Path, force: bool, attempts: int = 3) -> tuple[bool, str]:
+    """WT-04c: Windows のファイルロック(node_modules 等)に備えてリトライする。"""
+    err = ""
+    for i in range(attempts):
+        r = subprocess.run(
+            ["git", "worktree", "remove", "--force" if force else "--", str(path)],
+            cwd=root, capture_output=True, text=True)
+        if r.returncode == 0:
+            return True, ""
+        err = r.stderr.strip()
+        if i < attempts - 1:
+            time.sleep(1.0)
+    return False, err
+
+
 def cmd_close(args) -> int:
     root = repo_root()
     cfg = load_config(root)
@@ -290,18 +330,41 @@ def cmd_close(args) -> int:
     if not path.exists():
         raise SystemExit(f"worktree が見つかりません: {path}")
 
+    branch_exists = subprocess.run(
+        ["git", "rev-parse", "--verify", "--quiet", branch],
+        cwd=root, capture_output=True).returncode == 0
     if not args.force:
-        if git(["status", "--porcelain"], cwd=path).strip():
+        registered = path.resolve() in registered_worktrees(root)
+        if registered and git(["status", "--porcelain"], cwd=path).strip():
             raise SystemExit(f"未コミットの変更があります: {path}(WT-04a。--force で無視)")
-        merged = subprocess.run(
-            ["git", "merge-base", "--is-ancestor", branch, cfg["base_branch"]],
-            cwd=root, capture_output=True).returncode == 0
-        if not merged:
-            raise SystemExit(f"{branch} は {cfg['base_branch']} に未マージです(WT-04a。--force で無視)")
+        if branch_exists:
+            merged = subprocess.run(
+                ["git", "merge-base", "--is-ancestor", branch, cfg["base_branch"]],
+                cwd=root, capture_output=True).returncode == 0
+            if not merged:
+                raise SystemExit(f"{branch} は {cfg['base_branch']} に未マージです(WT-04a。--force で無視)")
 
-    git(["worktree", "remove", "--force" if args.force else "--", str(path)], cwd=root)
+    removed, err = remove_worktree(root, path, args.force)
+    if not removed:
+        subprocess.run(["git", "worktree", "prune"], cwd=root, capture_output=True)
+        if path.resolve() in registered_worktrees(root):
+            # 登録もディレクトリも残っている: 状態を変えずに失敗させる
+            raise SystemExit(f"worktree を削除できません: {path}\n{err}")
+        # 登録は解除済み(または元から未登録)。残骸の直接削除を試みる(WT-04c)
+        try:
+            shutil.rmtree(path)
+            removed = True
+        except OSError:
+            pass
+
     subprocess.run(["git", "branch", "-D" if args.force else "-d", branch],
                    cwd=root, capture_output=True)
+    if not removed:
+        # 登録解除には成功し、ディレクトリ削除のみ失敗(WT-04c)。閉鎖としては成立
+        print(f"⚠ WT-04c: worktree の登録は解除しましたが、ディレクトリを削除できませんでした")
+        print(f"   (Windows のファイルロック等)。手動で削除してください: {path}")
+        print(f"閉鎖(ディレクトリ残存): {branch}({path})")
+        return 0
     print(f"閉鎖: {branch}({path})")
     return 0
 
