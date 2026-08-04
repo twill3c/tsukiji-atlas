@@ -77,7 +77,9 @@ EVENT_SPECS: dict[str, dict[str, tuple[type, ...]]] = {
 ENUMS = {
     ("stage_end", "result"): {"pass", "fail", "skip"},
     ("loop_end", "outcome"): {"success", "partial", "aborted"},
-    ("commit", "kind"): {"feat", "fix", "test", "docs", "refactor", "chore"},
+    # data / spec はプロジェクト規約のコミット種別(HC-003: data 専用コミット、
+    # スペック駆動プロジェクトの spec: コミット)を写像なしで記録するための拡張
+    ("commit", "kind"): {"feat", "fix", "test", "docs", "refactor", "chore", "data", "spec"},
 }
 
 
