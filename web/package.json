@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/check-links.mjs",
     "test": "vitest run",
     "smoke": "node scripts/map-smoke.mjs"
   },

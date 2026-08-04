@@ -1,5 +1,5 @@
 {
-  "scaffold_version": "1.0.0",
+  "scaffold_version": "1.4.0",
   "registry_hint": "..\\harness-kit\\scaffold-kit\\registry",
   "components": [
     {
@@ -31,6 +31,25 @@
       "target": "TEST_SPEC.md",
       "source": "templates/TEST_SPEC.md.tmpl",
       "installed_version": "1.0.0"
+    },
+    {
+      "type": "file",
+      "id": "vercel_json",
+      "target": "vercel.json",
+      "source": "files/vercel.json",
+      "installed_version": "1.4.0",
+      "installed_sha256": "3902daae5ca30540055f78ca89db2b35b178e79e0e15e27ae5ab31343d4432c8"
+    },
+    {
+      "type": "file",
+      "id": "check_links",
+      "target": "web/scripts/check-links.mjs",
+      "source": "files/web/scripts/check-links.mjs",
+      "installed_version": "1.4.0",
+      "installed_sha256": "e01a08092e8f4cf909f23c68ae3d7d3865a2170ffed133b3bb402e599c20f606"
     }
+  ],
+  "profiles": [
+    "web-static"
   ]
 }
