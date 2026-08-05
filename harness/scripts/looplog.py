@@ -10,6 +10,8 @@ Python 標準ライブラリのみで動作する(LL-00e)。
   python scripts/looplog.py append  --loop loop_003 --event failure \
       --data code=GEN-REGRESS severity=S2 detected_stage=5 \
              summary="T-032がデグレード" resolution=rollback
+  python scripts/looplog.py append  --loop loop_003 --event correction \
+      --data supersedes=12 reason="loop_end を誤順序で記録したため無効化(LL-08)"
   python scripts/looplog.py validate
   python scripts/looplog.py summary --loop loop_003
   python scripts/looplog.py export  --out out/
@@ -21,11 +23,12 @@ import argparse
 import csv
 import datetime as dt
 import json
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.2"
 JST = dt.timezone(dt.timedelta(hours=9))
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -72,6 +75,10 @@ EVENT_SPECS: dict[str, dict[str, tuple[type, ...]]] = {
         "failure_count": (int,),
         "summary": (str,),
     },
+    "correction": {
+        "supersedes": (int,),
+        "reason": (str,),
+    },
 }
 
 ENUMS = {
@@ -93,8 +100,92 @@ def now_ts() -> str:
 
 
 def detect_project() -> str:
-    """プロジェクト名はリポジトリのディレクトリ名から推定(--project で上書き可)。"""
-    return Path.cwd().name
+    """プロジェクト名は主リポジトリのディレクトリ名から推定(--project で上書き可)。
+
+    cwd 名をそのまま使うと、worktree(`../<repo>.worktrees/<loop_id>/`)での実行時に
+    ループ ID が project として記録され、集計の結合キーが壊れる(HC-008)。
+    worktree-kit の配置規約(WT-01a/b)→ git common dir → cwd 名の順で導出する。
+    """
+    cwd = Path.cwd()
+    for anc in cwd.parents:
+        if anc.name.endswith(".worktrees"):
+            return anc.name[: -len(".worktrees")]
+    try:
+        r = subprocess.run(
+            ["git", "rev-parse", "--git-common-dir"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode == 0:
+            common = Path(r.stdout.strip())
+            if not common.is_absolute():
+                common = cwd / common
+            common = common.resolve()
+            if common.name == ".git":
+                return common.parent.name
+    except OSError:
+        pass
+    return cwd.name
+
+
+def _v_tuple(v) -> tuple:
+    """スキーマバージョン文字列を比較可能なタプルへ("1.2" → (1, 2))。"""
+    try:
+        return tuple(int(x) for x in str(v).split("."))
+    except ValueError:
+        return (0,)
+
+
+# ---------------------------------------------------------------- corrections
+
+def read_parsed(path: Path) -> list[tuple[int, dict]]:
+    """(物理行番号, レコード) の列を返す。JSON 解析できない行は読み飛ばす(検証は validate_file 側)。"""
+    parsed: list[tuple[int, dict]] = []
+    with open(path, encoding="utf-8") as f:
+        for lineno, line in enumerate(f, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            parsed.append((lineno, rec))
+    return parsed
+
+
+def apply_corrections(
+    parsed: list[tuple[int, dict]], fname: str
+) -> tuple[list[tuple[int, dict]], list[str]]:
+    """correction イベントを適用した有効レコード列と、correction 自体の違反を返す(LL-08)。
+
+    correction は supersedes(物理行番号)が指す先行レコードを無効化する。
+    訂正後の正しいレコードは通常イベントとして追記し直す。
+    """
+    errs: list[str] = []
+    by_line = {ln: rec for ln, rec in parsed}
+    voided: set[int] = set()
+    for ln, rec in parsed:
+        if rec.get("event") != "correction":
+            continue
+        target = rec.get("data", {}).get("supersedes")
+        if not isinstance(target, int) or target not in by_line or target >= ln:
+            errs.append(
+                f"{fname}:{ln}: correction.supersedes={target!r} は同一ファイル内の先行レコードの行番号を指すこと(LL-08)"
+            )
+            continue
+        if by_line[target].get("event") == "correction":
+            errs.append(f"{fname}:{ln}: correction を correction で訂正することはできない(LL-08)")
+            continue
+        if target in voided:
+            errs.append(f"{fname}:{ln}: 行 {target} は既に訂正済み(LL-08)")
+            continue
+        voided.add(target)
+    effective = [
+        (ln, rec)
+        for ln, rec in parsed
+        if rec.get("event") != "correction" and ln not in voided
+    ]
+    return effective, errs
 
 
 # ---------------------------------------------------------------- validate
@@ -143,9 +234,11 @@ def validate_record(rec: dict, taxonomy: dict, lineno: int, fname: str) -> list[
     return errs
 
 
-def validate_file(path: Path, taxonomy: dict) -> list[str]:
+def validate_file(path: Path, taxonomy: dict) -> tuple[list[str], list[str]]:
+    """(違反, 警告) を返す。警告は exit code に影響しない(旧版レコードの既知汚染など)。"""
     errs: list[str] = []
-    records: list[dict] = []
+    warns: list[str] = []
+    parsed: list[tuple[int, dict]] = []
     with open(path, encoding="utf-8") as f:
         for lineno, line in enumerate(f, 1):
             line = line.strip()
@@ -157,19 +250,55 @@ def validate_file(path: Path, taxonomy: dict) -> list[str]:
                 errs.append(f"{path.name}:{lineno}: JSON 解析エラー: {e}")
                 continue
             errs.extend(validate_record(rec, taxonomy, lineno, path.name))
-            records.append(rec)
+            parsed.append((lineno, rec))
 
-    if not records:
-        return errs or [f"{path.name}: レコードがありません"]
+    if not parsed:
+        return (errs or [f"{path.name}: レコードがありません"]), warns
 
     expected_loop = path.stem
-    for i, rec in enumerate(records, 1):
+    for lineno, rec in parsed:
         if rec.get("loop_id") and rec["loop_id"] != expected_loop:
-            errs.append(f"{path.name}:{i}: loop_id={rec['loop_id']!r} がファイル名と不一致(LL-00b)")
+            errs.append(f"{path.name}:{lineno}: loop_id={rec['loop_id']!r} がファイル名と不一致(LL-00b)")
 
-    ts_list = [r.get("ts", "") for r in records]
+    # project 検査(LL-14 / HC-008): worktree 実行での cwd 由来汚染を検出する。
+    # v1.2 以降のレコードは違反、旧版レコードは追記専用(LL-00a)の既知汚染として
+    # ファイル単位に集約した警告に落とす
+    strict_any = False
+    projects: set[str] = set()
+    legacy_polluted: list[int] = []
+    for lineno, rec in parsed:
+        proj = rec.get("project")
+        if not isinstance(proj, str):
+            continue
+        strict = _v_tuple(rec.get("v", "0")) >= (1, 2)
+        strict_any = strict_any or strict
+        projects.add(proj)
+        if proj == rec.get("loop_id"):
+            if strict:
+                errs.append(f"{path.name}:{lineno}: project={proj!r} が loop_id と一致 — "
+                            f"worktree 実行での cwd 由来汚染の疑い(LL-14 / HC-008)")
+            else:
+                legacy_polluted.append(lineno)
+    if legacy_polluted:
+        warns.append(f"{path.name}: 旧版レコード {len(legacy_polluted)} 件で project が "
+                     f"loop_id と一致(行 {legacy_polluted[0]}–{legacy_polluted[-1]})— "
+                     f"worktree 実行での cwd 由来汚染(LL-14 / HC-008)")
+    if len(projects) > 1:
+        msg = (f"{path.name}: project が混在 {sorted(projects)} — "
+               f"1 ループ 1 プロジェクトであること(LL-14)")
+        (errs if strict_any else warns).append(msg)
+
+    ts_list = [rec.get("ts", "") for _, rec in parsed]
     if ts_list != sorted(ts_list):
         errs.append(f"{path.name}: ts が時系列順でない(LL-00a)")
+
+    # 構造検査(LL-01 / LL-07)は correction 適用後の有効レコード列に対して行う(LL-08)
+    effective, cerrs = apply_corrections(parsed, path.name)
+    errs.extend(cerrs)
+    records = [rec for _, rec in effective]
+    if not records:
+        errs.append(f"{path.name}: 有効レコードがありません(全レコードが訂正で無効化)")
+        return errs, warns
 
     if records[0].get("event") != "loop_start":
         errs.append(f"{path.name}: 先頭イベントが loop_start でない(LL-01)")
@@ -186,7 +315,7 @@ def validate_file(path: Path, taxonomy: dict) -> list[str]:
             errs.append(
                 f"{path.name}: loop_end.failure_count={declared} だが failure レコードは {actual} 件(LL-07)"
             )
-    return errs
+    return errs, warns
 
 
 def iter_log_files(log_dir: Path):
@@ -200,10 +329,17 @@ def cmd_validate(args) -> int:
         print(f"ログディレクトリがありません: {log_dir}(記録がなければ合格扱い)")
         return 0
     all_errs: list[str] = []
+    all_warns: list[str] = []
     n = 0
     for path in iter_log_files(log_dir):
         n += 1
-        all_errs.extend(validate_file(path, taxonomy))
+        errs, warns = validate_file(path, taxonomy)
+        all_errs.extend(errs)
+        all_warns.extend(warns)
+    if all_warns:
+        print(f"⚠ {len(all_warns)} 件の警告(旧版レコードの既知の問題 — exit code に影響しない):")
+        for w in all_warns:
+            print(f"  - {w}")
     if all_errs:
         print(f"NG — {n} ファイル中 {len(all_errs)} 件の違反:")
         for e in all_errs:
@@ -258,21 +394,51 @@ def cmd_append(args) -> int:
             print(f"  - {e}")
         return 1
 
+    # 完了済みループへの追記ガード(LL-09)と correction の追記時検査(LL-08)
+    path = Path(args.log_dir) / f"{args.loop}.jsonl"
+    existing = read_parsed(path) if path.exists() else []
+    effective, _ = apply_corrections(existing, path.name)
+
+    # project 一貫性ガード(LL-14 / HC-008): 同一ループへ異なる project で追記しない。
+    # correction は旧汚染ループの回復経路のため対象外
+    if args.event != "correction" and effective:
+        existing_proj = effective[0][1].get("project")
+        if isinstance(existing_proj, str) and rec["project"] != existing_proj:
+            print(
+                f"記録拒否 — project={rec['project']!r} は既存レコードの {existing_proj!r} と"
+                f"不一致です(LL-14 / HC-008)。worktree と main checkout で実行場所が"
+                f"変わっていないか確認し、必要なら --project で明示してください"
+            )
+            return 1
+
+    if args.event == "correction":
+        target = rec["data"]["supersedes"]
+        if target not in {ln for ln, _ in effective}:
+            print(
+                f"記録拒否 — supersedes={target} は訂正可能なレコード行を指していません"
+                "(存在しない・correction・訂正済みのいずれか)(LL-08)"
+            )
+            return 1
+    elif any(r.get("event") == "loop_end" for _, r in effective):
+        print(
+            f"記録拒否 — {args.loop} は loop_end 記録済みです(LL-09)。"
+            "誤記の回復は correction イベント(supersedes=対象行番号)で無効化してから追記し直してください"
+        )
+        return 1
+
     # ツーストライク規則(LL-10)の警告: 同一コードの既存件数を数える
     if args.event == "failure":
         code = rec["data"]["code"]
         prior = 0
         log_dir = Path(args.log_dir)
         if log_dir.is_dir():
-            for path in iter_log_files(log_dir):
-                with open(path, encoding="utf-8") as f:
-                    for line in f:
-                        try:
-                            r = json.loads(line)
-                        except json.JSONDecodeError:
-                            continue
-                        if r.get("event") == "failure" and r.get("data", {}).get("code") == code:
-                            prior += 1
+            for p in iter_log_files(log_dir):
+                eff, _ = apply_corrections(read_parsed(p), p.name)
+                prior += sum(
+                    1
+                    for _, r in eff
+                    if r.get("event") == "failure" and r.get("data", {}).get("code") == code
+                )
         total = prior + 1
         if rec["data"].get("severity") == "S1" and not rec["data"].get("harness_ref"):
             print(f"⚠ LL-12: S1 失敗です。HARNESS_CHANGELOG への起票と harness_ref の追記が必要です。")
@@ -281,9 +447,7 @@ def cmd_append(args) -> int:
         elif total > 2 and not rec["data"].get("harness_ref"):
             print(f"⚠ LL-10: {code} は累計 {total} 回目。起票済み HC への harness_ref を付けてください。")
 
-    log_dir = Path(args.log_dir)
-    log_dir.mkdir(parents=True, exist_ok=True)
-    path = log_dir / f"{args.loop}.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     print(f"記録 → {path}({args.event})")
@@ -300,7 +464,8 @@ def cmd_summary(args) -> int:
         if not path.exists():
             print(f"見つかりません: {path}")
             continue
-        records = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+        effective, _ = apply_corrections(read_parsed(path), path.name)
+        records = [r for _, r in effective]
         start = next((r for r in records if r["event"] == "loop_start"), None)
         end = next((r for r in records if r["event"] == "loop_end"), None)
         failures = [r for r in records if r["event"] == "failure"]
@@ -355,18 +520,20 @@ def cmd_export(args) -> int:
     log_dir = Path(args.log_dir)
     out = Path(args.out)
 
-    events: list[dict] = []
+    events: list[dict] = []      # 生レコード(correction 含む・監査粒度)
+    eff_events: list[dict] = []  # correction 適用後(集計用)
     for path in iter_log_files(log_dir) if log_dir.is_dir() else []:
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
-                events.append(json.loads(line))
+        parsed = read_parsed(path)
+        events.extend(r for _, r in parsed)
+        eff, _ = apply_corrections(parsed, path.name)
+        eff_events.extend(r for _, r in eff)
 
-    # fact_events: 全イベント(明細粒度)
+    # fact_events: 全イベント(明細粒度・訂正含む生レコード)
     write_csv(out / "fact_events.csv", [flatten(r) for r in events])
 
-    # fact_loops: ループ粒度
+    # fact_loops: ループ粒度(correction 適用後)
     loops: dict[tuple, dict] = {}
-    for r in events:
+    for r in eff_events:
         key = (r["project"], r["loop_id"])
         row = loops.setdefault(key, {
             "project": r["project"], "loop_id": r["loop_id"],
@@ -391,9 +558,9 @@ def cmd_export(args) -> int:
             row["last_tests_failed"] = d["failed"]
     write_csv(out / "fact_loops.csv", list(loops.values()))
 
-    # fact_failures: 失敗粒度
+    # fact_failures: 失敗粒度(correction 適用後)
     frows = []
-    for r in events:
+    for r in eff_events:
         if r["event"] != "failure":
             continue
         d = r["data"]
@@ -438,7 +605,7 @@ def main(argv=None) -> int:
     ap = sub.add_parser("append", help="イベントを 1 件記録する")
     ap.add_argument("--loop", required=True)
     ap.add_argument("--event", required=True, choices=sorted(EVENT_SPECS))
-    ap.add_argument("--project", help="省略時はカレントディレクトリ名")
+    ap.add_argument("--project", help="省略時は主リポジトリ名を自動検出(worktree 実行にも対応 — HC-008)")
     ap.add_argument("--ts", help="省略時は現在時刻(JST)")
     ap.add_argument("--data", nargs="*", metavar="key=value")
     ap.set_defaults(func=cmd_append)
