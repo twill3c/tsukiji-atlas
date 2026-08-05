@@ -1,5 +1,5 @@
 {
-  "scaffold_version": "1.7.0",
+  "scaffold_version": "1.7.1",
   "registry_hint": "..\\harness-kit\\scaffold-kit\\registry",
   "components": [
     {
@@ -53,8 +53,8 @@
       "id": "license",
       "target": "LICENSE",
       "source": "files/LICENSE",
-      "installed_version": "1.7.0",
-      "installed_sha256": "2b22fe57956caae24d1dcb73074e9a2ba627e466c1484d9daf761ffbc480b778"
+      "installed_version": "1.7.1",
+      "installed_sha256": "99894d70d7f745bb66c65bb61520c29daf4e33f2649abd7190aee301932c610e"
     }
   ],
   "profiles": [
