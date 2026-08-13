@@ -47,6 +47,7 @@ export default function Attribution() {
       <a href="https://app-menu-amber.vercel.app" target="_blank" rel="noopener">
         App Menu
       </a>
+      {" ｜ 📱 スマホ対応"}
     </footer>
   );
 }
