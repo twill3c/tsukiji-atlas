@@ -27,6 +27,10 @@ export default function Attribution() {
       <a href="https://github.com/twill3c/tsukiji-atlas" target="_blank" rel="noreferrer">
         GitHub
       </a>
+      {" ・ "}
+      <a href="https://app-menu-amber.vercel.app" target="_blank" rel="noopener">
+        App Menu
+      </a>
     </footer>
   );
 }
