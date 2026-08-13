@@ -28,6 +28,22 @@ export default function Attribution() {
         GitHub
       </a>
       {" ・ "}
+      <a
+        href="https://claude.ai/code/artifact/1bc21b09-1ae9-4099-88c8-d867ad78965c"
+        target="_blank"
+        rel="noreferrer"
+      >
+        築地アトラスの歩き方
+      </a>
+      {" ・ "}
+      <a
+        href="https://claude.ai/code/artifact/41b74928-fb07-481d-a038-51397f28880f"
+        target="_blank"
+        rel="noreferrer"
+      >
+        築地アトラス設計図
+      </a>
+      {" ・ "}
       <a href="https://app-menu-amber.vercel.app" target="_blank" rel="noopener">
         App Menu
       </a>
