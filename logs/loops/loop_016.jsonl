@@ -1,0 +1,11 @@
+{"v": "1.2", "ts": "2026-08-14T07:35:18+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "loop_start", "data": {"goal": "画面にスマホ対応表記(📱 スマホ対応)を追加", "spec_refs": ["UI"], "scaffold_version": "1.7.1", "agent": "claude-fable-5"}}
+{"v": "1.2", "ts": "2026-08-14T07:35:18+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 1, "stage_name": "計画", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T07:35:18+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 2, "stage_name": "文脈読込", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T07:35:19+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 3, "stage_name": "テスト先行", "result": "skip", "notes": "UI 表記の追加。テスト対象の挙動変化なし"}}
+{"v": "1.2", "ts": "2026-08-14T07:37:28+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "test_run", "data": {"command": "cd web && npx vitest run", "passed": 13, "failed": 0}}
+{"v": "1.2", "ts": "2026-08-14T07:37:28+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 4, "stage_name": "実装", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T07:38:09+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "commit", "data": {"sha": "564baa14b8f4eb3b38fd6cd18e9cea7fd8747e30", "kind": "feat", "message": "feat: 画面にスマホ対応表記を追加"}}
+{"v": "1.2", "ts": "2026-08-14T07:55:02+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 5, "stage_name": "検証", "result": "pass", "notes": "本番 tsukiji-atlas.vercel.app の HTML に スマホ対応 を確認"}}
+{"v": "1.2", "ts": "2026-08-14T07:55:02+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 6, "stage_name": "文書同期", "result": "skip", "notes": "表記追加のみで文書更新不要"}}
+{"v": "1.2", "ts": "2026-08-14T07:55:03+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "stage_end", "data": {"stage": 7, "stage_name": "完了", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T07:55:03+09:00", "project": "tsukiji-atlas", "loop_id": "loop_016", "event": "loop_end", "data": {"outcome": "success", "failure_count": 0, "summary": "フッターに 📱 スマホ対応 表記を追加。vitest 13 件・build 合格、本番反映を確認"}}
