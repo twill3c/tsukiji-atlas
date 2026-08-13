@@ -1,0 +1,11 @@
+{"v": "1.2", "ts": "2026-08-14T01:18:12+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "loop_start", "data": {"goal": "Attribution の「MIT License」表記に LICENSE ページへのリンクを追加(フリート統一、ユーザー指示)", "spec_refs": ["N-05"], "scaffold_version": "1.0.0", "agent": "claude-fable-5"}}
+{"v": "1.2", "ts": "2026-08-14T01:18:12+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 1, "stage_name": "計画", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T01:18:13+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 2, "stage_name": "文脈読込", "result": "pass", "notes": "Attribution.tsx を読了"}}
+{"v": "1.2", "ts": "2026-08-14T01:18:13+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 3, "stage_name": "テスト先行", "result": "skip", "notes": "フッタ内リンク 1 箇所の追加。既存テストなし、挙動変化なし"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:04+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "test_run", "data": {"command": "npx vitest run + npm run build(check-links 含む)", "passed": 13, "failed": 0}}
+{"v": "1.2", "ts": "2026-08-14T01:19:04+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 4, "stage_name": "実装", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:05+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "commit", "data": {"sha": "403e582", "kind": "feat"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:05+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 5, "stage_name": "検証", "result": "pass", "notes": "web vitest 13 green + next build/check-links 成功"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:05+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 6, "stage_name": "文書同期", "result": "pass", "notes": "N-05 の範囲内。SPEC 変更不要"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:06+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "stage_end", "data": {"stage": 7, "stage_name": "完了", "result": "pass"}}
+{"v": "1.2", "ts": "2026-08-14T01:19:06+09:00", "project": "tsukiji-atlas", "loop_id": "loop_014", "event": "loop_end", "data": {"outcome": "success", "failure_count": 0, "summary": "Attribution の MIT License に LICENSE リンクを追加。テスト/ビルド green、失敗 0 件"}}
