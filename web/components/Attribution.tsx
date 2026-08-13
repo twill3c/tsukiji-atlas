@@ -15,6 +15,10 @@ export default function Attribution() {
         Wikidata
       </a>
       (CC0)・自前調査(CC BY 4.0)
+      {" ｜ コード: MIT License © 2026 坂田哲朗 ・ "}
+      <a href="https://github.com/twill3c/tsukiji-atlas" target="_blank" rel="noreferrer">
+        GitHub
+      </a>
     </footer>
   );
 }
